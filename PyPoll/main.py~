@@ -1,0 +1,41 @@
+#You will be given two sets of poll data (election_data_1.csv and election_data_2.csv). 
+#Each dataset is composed of three columns: 
+#Voter ID, County, and Candidate. 
+#Your task is to create a Python script that analyzes the votes and calculates each of the following:
+#The total number of votes cast
+#A complete list of candidates who received votes
+#The percentage of votes each candidate won
+#The total number of votes each candidate won
+#The winner of the election based on popular vote.
+
+import os
+import csv
+
+
+candidates = []
+counties = []
+voters = []
+
+voters_file_path = os.path.join('data','election_data1.csv')
+
+with open(voters_file_path,'r') as election_file:
+  elections = csv.reader(election_file, delimiter=',')
+
+  for vote in elections:
+      voter_id = vote[0]
+      voters.append(voter_id)
+      voter_county = vote[1]
+      counties.append(voter_county)
+      voter_candidate = vote[2]
+      candidates.appennd(voter_candidate)
+
+print("total votes "+str(len(voters)))
+print("total candidates "+str(len(candidates)))
+print("total counties  "+str(len(counties)))
+
+
+
+
+
+      
+
