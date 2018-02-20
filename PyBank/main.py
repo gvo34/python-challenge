@@ -14,7 +14,8 @@ avg_changes = []
 greatest_increase = 0
 greatest_decrease = 0
 
-bankraw = os.path.join('Generators','budget_data2.csv')
+
+bankraw = os.path.join('data', 'budget_data_1.csv')
 
 def average_change(revenuelist):
       allr = len(revenuelist)-1
