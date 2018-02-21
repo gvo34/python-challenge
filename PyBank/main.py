@@ -31,9 +31,6 @@ def print_financial_report(file_name, months, totalr, sum_av, sum_ch, greatest_i
             print("  The average revenue: " + str(sum_av)+" with average change of "+ str(sum_ch))#, file=reportf)
             print("  The greatest increase: " + str(greatest_incr) + " on " +date_is)#,file=reportf)
             print("  The greatest decrease: " + str(greatest_decr) + " on " +date_ds)#,file=reportf)
-      #summary = zip (years, revenues)
-      #for s in summary:
-      #      print(s)
 
 def read_financial_report(file_name):
       reportfile = os.path.join('output',file_name+'financial_report.txt')
@@ -85,6 +82,10 @@ for file in input_file:
         # collect total
         revenues.append(total_revenue)
         averages = average_change(rawrevenues)
+
+        #summary = zip (years, revenues)
+        #for s in summary:
+        #    print(s)
              
 
         months = str(len(rawdates))
