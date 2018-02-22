@@ -16,7 +16,7 @@ def average_change(revenuelist):
       for r in range(0,allr):
             r1 = int(revenuelist[r])
             r2 = int(revenuelist[r+1])
-            change = (r1+r2)/2
+            change = r2-r1
             avg_changes.append(change)
       return avg_changes
             
