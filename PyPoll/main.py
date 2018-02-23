@@ -11,37 +11,16 @@
 import os
 import csv
 
+def add_vote(name,votedict):
+  if name in votedict:
+    votedict[name] +=1
+  else:
+    votedict[name] = 1
 
-candidates = []
-candidates_votes = []
-candidates_county = []
-counties = []
-counties_votes = []
-voters = []
-
-
-
-
-# Add candidate to the list of candidates
-def add_candidate(candidate, candidatelist,votes):
-  candidatelist.append(candidate)
-  cleanlist = list(set(candidatelist))
-  if len(cleanlist) != len(candidatelist): #added a new candidate
-      votes.append(1)
-  return cleanlist
-
-# increase the votecount with matching votelist
-def add_vote(vote, votelist, votecount):
-      try:  #search if the vote is already in the list
-        index = votelist.index(vote)
-      except ValueError:
-        index = -1  
-            # if the vote is in the list, increase the counter
-      if index >= len(votecount) or index == -1:
-        votecount.append(1)
-      else:
-        votecount[index] +=1
-
+candidates = {} # {'candidate': votes}
+counties = {} # {'county': {candidate': votes}}
+total_votes = 0
+totals = {}  # {'county':total-votes}
 
 input_data = ('election_data_1', 'election_data_2')
 
@@ -51,50 +30,44 @@ for election_data in input_data:
 
   with open(voters_file_path,'r') as election_file:
     elections = csv.reader(election_file, delimiter=',')
-
+    next(elections, None) #skip header
     for vote in elections:
-      voter_id = vote[0]
-      voters.append(voter_id)
+      candidate_name = vote[2]
+      add_vote(candidate_name, candidates)
+      total_votes += 1
+      county = vote[1]
 
-      voter_county = vote[1]
-      counties = add_candidate(voter_county, counties, counties_votes)
+      if county in counties:
+        add_vote(candidate_name, counties[county])
+        totals[county]+=1
+      else:
+        counties[county]={candidate_name:1}
+        totals[county] = 1
+  
+  # Total number of votes
+  print(".................. Elections ..............")
+  print("Total number of votes "+str(total_votes))
+  print("...........................................")
+  #List all candidates
+  for c in candidates:
+    percentage = (candidates[c]/total_votes)*100
+    print(c + " " + str(int(percentage)) +"% ("+ str(candidates[c]) +")")
 
-      voter_candidate = vote[2]
-      candidates = add_candidate(voter_candidate, candidates, candidates_votes)
-
-      add_vote(voter_candidate, candidates, candidates_votes)
-      add_vote(voter_county, counties, counties_votes)
-
-      total = len(voters)
-
-
-  percentage = []
-  for c in candidates_votes:
-    p = float(c)
-    percentage.append('{:.0%}'.format((p/total)))  
-
-  print("----------------- ELECTIONS from "+election_data+" ------------------------")
-  print("Total candidates tally of :" + str(len(candidates)) + " candidates")
-  tally = zip(candidates, percentage, candidates_votes)
-  for c in tally:
-    print (c)
-
-  max_votes = max(candidates_votes)
-  m_index = candidates_votes.index(max_votes)
-
-  print(">>>>>>>>>>>>>>>>>>>>>>>>The winner is: " + candidates[m_index])
-
-  print("Voting partocipation is:")
-  turnout = zip(counties, counties_votes)
-  for t in turnout:
-    print(t)
-
-  max_turnout = max(counties_votes)
-  t_index = counties_votes.index(max_turnout)
-
-  print("County with the highest turnout is: "+counties[t_index] + " with " + str(max_turnout)+" votes")
+  max_key = max(candidates,key=candidates.get)
+  percentage = (candidates[max_key]/total_votes)*100
+  print("...........................................")
+  print("Winner is "+max_key + " with "+str(int(percentage))+"%")
+  print("...........................................")
 
 
+  #tally votes
+#  for county_votes in counties:
+#    max_key = max(counties[county_votes],key=counties[county_votes].get)
+#    percentage = (counties[county_votes][max_key]/totals[county_votes])*100
+#    print("winner in "+county_votes+ " is " + max_key +" with "+str(int(percentage))+"%") 
+
+
+  
 
       
 
