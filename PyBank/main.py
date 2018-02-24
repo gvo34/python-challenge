@@ -35,7 +35,7 @@ def print_financial_report(file_name, months, totalr, sum_av, sum_ch, greatest_i
             print("  The greatest decrease: " + str(greatest_decr) + " on " +date_ds,file=reportf)
 
 
-def create_financial_report(dates, revenues, total, chg_averages):
+def create_financial_report(filename, dates, revenues, total, chg_averages):
       # calculate totals
       months = str(len(dates))
       total = str(total)
@@ -49,7 +49,7 @@ def create_financial_report(dates, revenues, total, chg_averages):
       date_d = chg_averages.index(g_decr) 
       d_decr = dates[date_d+1]       
       
-      print_financial_report(file, months, total, all_av, chg_av, g_incr, d_incr, g_decr, d_decr)
+      print_financial_report(filename, months, total, all_av, chg_av, g_incr, d_incr, g_decr, d_decr)
 
 
 def read_financial_report(file_name):
@@ -60,16 +60,10 @@ def read_financial_report(file_name):
             print(lines)
 
 
-
-# Provide a list of input files to read data from
-input_file = ('budget_data_1','budget_data_2')
-
-for file in input_file:
+def collect_revenue(file, rawrevenues,rawdates):
+      # read through revenue rows and select dates and revenue
       bankraw = os.path.join('data', file+'.csv')
-      rawrevenues = []
-      rawdates = []
-      total_revenue = 0
-
+      total = 0
       with open(bankraw, 'r') as bankfile:
         bankreader = csv.reader(bankfile, delimiter=',')
         next(bankreader, None)  #skip header
@@ -81,11 +75,22 @@ for file in input_file:
           row_rev =  int(row[1])
           rawrevenues.append(row_rev)
              
-          total_revenue = total_revenue + row_rev
-             
-        # collect change averages and reports
-        averages = average_revenue_change(rawrevenues)
-        
-        create_financial_report(rawdates, rawrevenues, total_revenue, averages)
-        
-        read_financial_report(file)
+          total = total + row_rev
+      return total
+
+
+
+def PyBank(input):
+      for file in input:
+            revenues = []
+            dates = []
+            # get revenue data from file into rawrevenues, rawdates)
+            total_revenue = collect_revenue(file, revenues, dates)       
+            averages = average_revenue_change(revenues)
+            create_financial_report(file, dates, revenues, total_revenue, averages)
+            read_financial_report(file)
+
+
+# Provide a list of input files to read data from
+input_files = ('budget_data_1','budget_data_2')
+PyBank(input_files)
