@@ -91,18 +91,20 @@ def format_record_fields(datafile):
             record.append(encoded)
             record.append(state)  
     
-            print(record)
             newdata.append(record)
 
         return newdata
 
 
+def PyBoss(files):
+    for datafile in files:
+        newrecords = format_record_fields(datafile)
+        write_records(newrecords,datafile)
+        read_data(datafile)
 
 
 input_files = ('employee_data1','employee_data2')
+PyBoss(input_files)
 
-for datafile in input_files:
-    newrecords = format_record_fields(datafile)
-    write_records(newrecords,datafile)
-    read_data(datafile)
+
 
