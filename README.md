@@ -7,3 +7,5 @@ PyBank: - create a financial report of monthly revenue reports
 PyPoll: - summariaze a voting poll and discover the winner
 
 PyBoss: - rewrite a employees report ith improved formatting
+
+PyParagraph - summarize word and sentence count of a given text
