@@ -17,7 +17,6 @@ def add_vote(name,votedict,vote):
   else:
     votedict[name] = vote
 
-
 def county_vote(countyname, candidatename, counties): 
   if countyname in counties:
     add_vote(candidatename, counties[countyname],1)
@@ -29,7 +28,7 @@ def print_votes(total_votes, candidates, counties, report):
   reportfile = os.path.join('output',report+'_report.txt')
   with open(reportfile,'w',newline='') as reprotf:
     # Total number of votes
-    print(".................. Elections ..............")
+    print(".................."+report+" Elections ..............")
     print("Total number of votes "+str(total_votes))
     print("...........................................")
     #List all candidates
@@ -61,7 +60,7 @@ def read_elections_report(file_name):
             print(lines)
 
 
-def elections(datafiles):
+def PyPoll(datafiles):
   for election_file in datafiles:
     voters_file_path = os.path.join('data',election_file+'.csv')  
 
@@ -87,7 +86,7 @@ def elections(datafiles):
 
 
 input_data = ('election_data_1', 'election_data_2')
-elections(input_data)
+PyPoll(input_data)
 
       
 
